@@ -1,0 +1,20 @@
+1. powershellben (Start jobb gomb):
+	cd c:\docker_wsl
+2. majd ugyanitt:
+	wsl --import Debian c:\docker_wsl\.\docker.tar
+
+3. cmd-ben: 
+	wsl
+
+4. https://localhost:9443 (speciális tovább)
+	Felh: admin
+	Jelszó: #Aa123456789@
+5. containers-re kattintunk
+6. leállítunk mindent
+7. elindítjuk a docker...-t (a docker-laravel sorában lévőket indítsuk el!)
+
+5. intézőben:
+	\\wsl$
+	Debian/root/docker_laravel/web/html...
+
+	VS Code-ban is először wsl, majd docker ps...
