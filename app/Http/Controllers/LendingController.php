@@ -142,4 +142,47 @@ class LendingController extends Controller
 
         return $books;
     }
+
+    public function reservationsIHaveFrom() {
+        $user = Auth::user();
+        $books = DB::table('lendings as l')
+        ->join('copies as c', 'l.copy_id', 'c.copy_id')
+        ->join('books as b', 'c.book_id', 'b.book_id')
+        ->select('author', 'title')
+        ->where('user_id', $user->id)
+        ->whereNull('end')
+        ->whereRaw('DATEDIFF(CURRENT_DATE, start) > 21')
+        ->get();
+
+        return $books;
+    }
+
+    public function bringBack($copy_id, $start) {
+        //bej-tt felhasznalo
+        $user = Auth::user();
+        //melyik kölcsönzés
+        $lending = $this->show($user->id, $copy_id, $start);
+        //visszahozom a konyvet
+        $lending->end = date(now());
+        //mentés
+        $lending->save();
+        //2. esemény
+        DB::table('copies')
+        ->where('copy_id', $copy_id)
+        // ebben benne van a mentés is!        
+        ->update(['status' => 0]);
+    }
+
+    public function bringBack2($copy_id, $start) {
+        //bej-tt felhasznalo
+        $user = Auth::user();
+        //melyik kölcsönzés
+        $lending = $this->show($user->id, $copy_id, $start);
+        //visszahozom a konyvet
+        $lending->end = date(now());
+        //mentés
+        $lending->save();
+        DB::select('CALL toLibrary(?)', array($copy_id));
+    }
+
 }

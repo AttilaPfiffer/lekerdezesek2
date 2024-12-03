@@ -76,4 +76,9 @@ class UserController extends Controller
         ->get();
     }
 
+    public function usersWithReservations() {
+        return User::with('userAndReservations')
+        ->get();
+    }
+
 }
